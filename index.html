@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Password Generator</title>
+</head>
+
+<body onload="onload()" class="bg-light">
+    <header>
+        <h1>Password Generator</h1>
+    </header>
+    <h2>Generate a Password</h2>
+    <textarea readonly id="password" placeholder="Your Secure Password" aria-label="Generated Password"></textarea>
+    <button id="generate" onlclick="generate()">Generate Password</button>
+    <button id="copy">
+        Copy to Clipboard
+    </button>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                
+                <p>Special Characters<input id="special" type="checkbox" aria-label="Checkbox for following text input"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                
+                <p>Numbers<input id="numbers" type="checkbox" aria-label="Checkbox for following text input"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                
+                <p>Lowercase Letters<input id="lowercase" type="checkbox" aria-label="Checkbox for following text input"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                
+                <p>Uppercase Letters<input id="uppercase" type="checkbox" aria-label="Checkbox for following text input"></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="input-group mb-3">
+        <p>How many characters would you like your password to be? <input id="passwordLength" type="number" class="form-control" placeholder="8-128" aria-label="Numbers" aria-describedby="basic-addon1"></p>
+    </div>
+
+    <script>
+
+        //parent function
+        function onload() {
+
+            //ELEMENT/BUTTON ID DECLARATIONS
+            const generateEl = document.getElementById("generate");
+            const copyEl = document.getElementById("copy");
+
+            //password appear box
+            let passwordEl = document.getElementById("password");
+
+            //Checkboxes
+            const specialEl = document.getElementById("special");
+            const numberEl = document.getElementById("numbers");
+            const lowercaseEl = document.getElementById("lowercase");
+            const uppercaseEl = document.getElementById("uppercase");
+
+
+            //CHARACTER ARRAYS
+            const specialArray = ["!", "#", "$", "%", "&", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "`", "{", "|", "}", "~"];
+            const numberArray = ["1","2","3","4","5","6","7","8","9","0"];
+            const lowercaseArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            const uppercaseArray = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
+
+            //password character pool
+            let passwordArray = [];
+
+            //final password
+            let finalPasswordArray = [];
+
+            //RUNS ON GENERATE CLICK
+            generateEl.onclick = function generate(){
+
+                passwordArray = [];
+                finalPasswordArray = [];
+
+                let lengthInput = document.getElementById("passwordLength").value;
+
+                console.log("password length " + lengthInput);
+
+                    if (lengthInput < 8){
+                        alert("please select a password length greater than 8");
+                        window.location.reload(false);
+                    }
+
+                    if (lengthInput > 128){
+                        alert("please select a password length less than 128");
+                        window.location.reload(false);
+                    }
+
+                    if (document.getElementById("special").checked){
+                        passwordArray = passwordArray.concat(specialArray);
+                        console.log("special characters checked");
+                    }
+
+                    if (document.getElementById("numbers").checked){
+                        passwordArray = passwordArray.concat(numberArray);
+                        console.log("number characters checked");
+                    }
+
+                    if (document.getElementById("lowercase").checked){
+                        passwordArray = passwordArray.concat(lowercaseArray);
+                        console.log("lowercase characters checked");
+                    }
+
+                    if (document.getElementById("uppercase").checked){
+                        passwordArray = passwordArray.concat(uppercaseArray);
+                        console.log("uppercase characters checked");
+                    }
+                    
+////////////////////////////////////////////////////// password generation ///////////////////////////////////////////////////////////////////////////
+
+                    //password array generator
+
+                    for (let i = 0; i < lengthInput; i++) {
+
+                    //select random char from password array
+
+                    let passwordChar = passwordArray[Math.floor(Math.random() * passwordArray.length)];
+
+                    console.log(passwordChar);
+
+                    //push random char into final password
+
+                    finalPasswordArray.push(passwordChar);
+                }
+                
+                console.log(passwordArray);
+                console.log(finalPasswordArray);
+                
+                //print final password array to password box
+                passwordEl.innerHTML = finalPasswordArray.join("");
+
+            }
+
+            //copy password button
+            //syntax used from https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+            copyEl.onclick = function copy(){
+                const copyPassword = document.getElementById("password");
+                copyPassword.select();
+                copyPassword.setSelectionRange(0, 99999)
+                document.execCommand("copy");
+            }
+            
+            
+
+            //function links
+            window.generate = generate
+            window.copy = copy
+        };
+    </script>
+
+</body>
+
+</html>
