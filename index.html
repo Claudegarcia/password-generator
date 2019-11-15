@@ -110,6 +110,8 @@
                         window.location.reload(false);
                     }
 
+                    //checked box method from https://stackoverflow.com/questions/9887360/how-can-i-check-if-a-checkbox-is-checked
+                    //concat syntax found at https://stackoverflow.com/questions/3975170/javascript-how-to-join-combine-two-arrays-to-concatenate-into-one-array
                     if (document.getElementById("special").checked){
                         passwordArray = passwordArray.concat(specialArray);
                         console.log("special characters checked");
@@ -146,7 +148,7 @@
 
                     finalPasswordArray.push(passwordChar);
                 }
-                
+
                 console.log(passwordArray);
                 console.log(finalPasswordArray);
                 
